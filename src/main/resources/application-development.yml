@@ -2,9 +2,8 @@ server:
   port: 9201
 
 kafka:
-  tcp_comm_port: 9350
-  port: 9200
-  cluster_name: es_cluster
+  zkPort: 2181
+  brokerPort: 9092
 
 spring:
   application:
