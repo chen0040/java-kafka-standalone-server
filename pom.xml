@@ -307,11 +307,13 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/info.batey.kafka/kafka-unit -->
         <dependency>
             <groupId>info.batey.kafka</groupId>
             <artifactId>kafka-unit</artifactId>
-            <version>0.1.2</version>
+            <version>0.7</version>
         </dependency>
+
 
 
     </dependencies>
