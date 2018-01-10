@@ -30,6 +30,8 @@ public class KafkaConsumerDemo {
         thread.start();
 
         producer.write(topic, testString);
+        producer.write(topic, testString);
+        producer.write(topic, testString);
         try {
             sleep(50000);
         } catch (InterruptedException e) {

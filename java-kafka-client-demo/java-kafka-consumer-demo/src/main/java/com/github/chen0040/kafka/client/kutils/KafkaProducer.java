@@ -1,6 +1,7 @@
 package com.github.chen0040.kafka.client.kutils;
 
 import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,15 +38,21 @@ public class KafkaProducer implements KafkaProducerContract, AutoCloseable {
     }
 
     private void open(){
-        Properties prop = new Properties();
-        prop.put("bootstrap.servers", properties.getKafkaBrokers());
-        prop.put("request.required.acks", properties.getRequestAck());
-        prop.put("key.serializer", properties.getKeySerializer());
-        prop.put("value.serializer", properties.getValueSerializer());
-        prop.put("request.timeout.ms", 300000);
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                properties.getKafkaBrokers());
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.RETRIES_CONFIG, 0);
+        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 2);
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                "org.apache.kafka.common.serialization.StringSerializer");
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                "org.apache.kafka.common.serialization.StringSerializer");
 
         //prop.put("partitioner.class", KafkaProperties.partitionerClass);
-        producer = new org.apache.kafka.clients.producer.KafkaProducer(prop);
+        producer = new org.apache.kafka.clients.producer.KafkaProducer(props);
     }
 
     public synchronized void write(String topic, String json) {

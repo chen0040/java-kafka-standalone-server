@@ -2,7 +2,7 @@
 
 A kafka standalone server for integration testing
 
-Supported version: kafka-0.10.2.0 (scala 2.11)
+Supported version: kafka-0.10.0.2 (scala 2.11)
 
 # Feature
 

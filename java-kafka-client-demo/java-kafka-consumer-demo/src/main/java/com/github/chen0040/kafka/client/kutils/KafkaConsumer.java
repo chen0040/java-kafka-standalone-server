@@ -1,7 +1,9 @@
 package com.github.chen0040.kafka.client.kutils;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
@@ -49,12 +51,16 @@ public class KafkaConsumer implements Runnable {
       this.id = id;
       this.topics = topics;
       Properties props = new Properties();
-      props.put("bootstrap.servers", properties.getKafkaBrokers());
-      props.put("group.id", groupId);
-      props.put("key.deserializer", properties.getKeyDeserializer());
-      props.put("value.deserializer", properties.getValueDeserializer());
-      props.put("request.timeout.ms", 300000);
-        props.put("session.timeout.ms", 180000);
+      props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, properties.getKafkaBrokers());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
+        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                "org.apache.kafka.common.serialization.StringDeserializer");
+
       this.consumer = new org.apache.kafka.clients.consumer.KafkaConsumer(props);
     }
 
@@ -82,6 +88,7 @@ public class KafkaConsumer implements Runnable {
             }
         }
         catch (WakeupException e) {
+            e.printStackTrace();
             logger.info("shutting down");
         }
         finally {
