@@ -13,6 +13,14 @@
         <module>java-kafka-consumer-demo</module>
     </modules>
 
+    <properties>
+        <surefire.version>2.19</surefire.version>
+        <lombok.version>1.16.6</lombok.version>
+        <findbugs.version>3.0.2</findbugs.version>
+        <guava.version>19.0</guava.version>
+    </properties>
+
+
 
     <profiles>
 
