@@ -1,4 +1,4 @@
-package com.github.chen0040.kafka.client.kutils;
+package com.github.chen0040.kafka.clients;
 
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;

@@ -43,6 +43,25 @@ java -jar kafka-producer-demo.jar
 java -jar kafka-consumer-demo.jar
 ```
 
+The producer codes are shown below:
+
+```java
+
+String topic = "kafkatest";
+KafkaProducerContract producer = KafkaProducer.getInstance();
+producer.setBrokers("localhost:9092");
+
+while(true) {
+    String testString = "TEST " + new Date(System.currentTimeMillis());
+    System.out.println("produced: " + testString);
+    producer.write(topic, testString);
+    try {
+        sleep(2000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+}
+```
 
 
 # Note

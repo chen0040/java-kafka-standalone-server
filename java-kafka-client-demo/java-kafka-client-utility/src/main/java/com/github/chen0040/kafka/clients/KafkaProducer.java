@@ -1,4 +1,4 @@
-package com.github.chen0040.kafka.client.kutils;
+package com.github.chen0040.kafka.clients;
 
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -31,6 +31,11 @@ public class KafkaProducer implements KafkaProducerContract, AutoCloseable {
             instance = new KafkaProducer();
         }
         return instance;
+    }
+
+    @Override
+    public void setBrokers(String brokers) {
+        this.properties.setKafkaBrokers(brokers);
     }
 
     public void configure(KafkaProperties properties) {

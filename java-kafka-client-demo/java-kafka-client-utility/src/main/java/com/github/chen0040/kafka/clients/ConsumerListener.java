@@ -1,4 +1,4 @@
-package com.github.chen0040.kafka.client.kutils;
+package com.github.chen0040.kafka.clients;
 
 /**
  * Created by low on 24/5/16.

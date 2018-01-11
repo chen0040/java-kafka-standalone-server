@@ -1,9 +1,8 @@
-package com.github.chen0040.kafka.client.kutils;
+package com.github.chen0040.kafka.clients;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
@@ -44,6 +43,20 @@ public class KafkaConsumer implements Runnable {
 
     public KafkaConsumer(KafkaProperties properties, int id, String groupId, List<String> topics) {
         this.properties = properties;
+        setup(id, groupId, topics);
+    }
+
+    public KafkaConsumer(String brokers, int id, String groupId, List<String> topics, int partitionNumber) {
+        this.properties.setKafkaBrokers(brokers);
+        setup(id, groupId, topics);
+        for (String topic: topics) {
+            this.partition.add(new TopicPartition(topic, partitionNumber));
+        }
+        isPartitioned = true;
+    }
+
+    public KafkaConsumer(String brokers, int id, String groupId, List<String> topics) {
+        this.properties.setKafkaBrokers(brokers);
         setup(id, groupId, topics);
     }
 
