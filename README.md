@@ -43,23 +43,57 @@ java -jar kafka-producer-demo.jar
 java -jar kafka-consumer-demo.jar
 ```
 
-The producer codes are shown below:
+The producer codes in kafka-producer-demo.jar are shown below:
 
 ```java
-
-String topic = "kafkatest";
-KafkaProducerContract producer = KafkaProducer.getInstance();
-producer.setBrokers("localhost:9092");
-
-while(true) {
-    String testString = "TEST " + new Date(System.currentTimeMillis());
-    System.out.println("produced: " + testString);
-    producer.write(topic, testString);
-    try {
-        sleep(2000);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
+import com.github.chen0040.kafka.clients.*;
+public static void main(String[] args) {
+    String topic = "kafkatest";
+    KafkaProducerContract producer = KafkaProducer.getInstance();
+    producer.setBrokers("localhost:9092");
+    
+    while(true) {
+        String testString = "TEST " + new Date(System.currentTimeMillis());
+        System.out.println("produced: " + testString);
+        producer.write(topic, testString);
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+}
+```
+
+The consumer codes in java-kafka-consumer-demo.jar are shown below:
+
+```java
+import com.github.chen0040.kafka.clients.*;
+public static void main(String[] args) {
+    String topic = "kafkatest";
+    List<String> topics = new ArrayList<>();
+    topics.add(topic);
+
+    String brokers = "localhost:9092";
+    KafkaConsumer consumer = new KafkaConsumer(brokers, 1, "es-group", topics);
+
+
+    ConsumerListener listener = (data) -> System.out.println("consumer received: " + data);
+
+    consumer.addListener(listener);
+    Thread thread = new Thread(consumer);
+    thread.start();
+
+    Runtime.getRuntime().addShutdownHook(new Thread(consumer::shutdown));
+
+    while(true) {
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 ```
 
